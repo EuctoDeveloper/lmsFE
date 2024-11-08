@@ -18,6 +18,9 @@ export function postLoginFn(data) {
 
 export const downloadCSV = (heading, rows) => {
     const escapeCsvValue = (value) => {
+        if(value === "id" || value === "ID" || value === "Id"){
+            value = "Reference Id";
+        }
         if (typeof value === 'string' && value.includes(',')) {
             return `"${value}"`;
         }

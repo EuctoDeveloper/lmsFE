@@ -83,7 +83,7 @@ export function updateUser(id, data) {
             id: id,
             payload: payload
         }
-    } else if(data.userType === 'staff') {
+    } else if(data.userType === 'course admin' || data.userType === "staff") {
         payload.departmentId = data.departmentId;
         payload.designationId = data.designationId;
         payload.branchId = data.branchId;
@@ -112,5 +112,26 @@ export function activateUser(id) {
     return {
         type: type.ACTIVATE_USER,
         payload: id
+    }
+}
+
+export function getCourseProgressListByUserId(id) {
+    return {
+        type: type.FETCH_COURSE_PROGRESS_LIST_BY_USER_ID,
+        payload: id
+    }
+}
+
+export function getUserProgressListByCourseId(id) {
+    return {
+        type: type.FETCH_USER_PROGRESS_LIST_BY_COURSE_ID,
+        payload: id
+    }
+}
+
+export function getCourseProgressDetail(courseId, userId) {
+    return {
+        type: type.FETCH_COURSE_PROGRESS_DETAIL,
+        payload: {courseId, userId}
     }
 }

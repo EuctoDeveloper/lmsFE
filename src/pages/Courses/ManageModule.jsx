@@ -42,6 +42,8 @@ const ManageModule = (props) => {
     useEffect(() => {
         if(props.modules && props.modules.length > 0)
             setModuleData(props.modules);
+        else
+            setModuleData([]);
     }, [props.modules]);
     useEffect(() => {
         if(props.updateModule && props.updateModule.message && props.updateModule.message.includes("Success")) {
@@ -85,6 +87,11 @@ const ManageModule = (props) => {
         let idToUpdate = editModuleId;
         props.updateModule_(idToUpdate, data);
     };
+    const cancelUpdateModule = () => {
+        setEditMode(false);
+        setEditModuleId(null);
+        setEditModuleName('');
+    };
     const deactivateLesson = (lessonId) => {
         props.deactivateLesson_(lessonId);
     }
@@ -119,7 +126,7 @@ const ManageModule = (props) => {
                 <div style={{ marginBottom: '20px' }}>
                     <Alert
                         message="Warning"
-                        description="This course cannot be edited as the start date has already passed."
+                        description="This course cannot be edited as already mapped and the start date has already passed."
                         type="warning"
                         showIcon
                     />
@@ -150,6 +157,11 @@ const ManageModule = (props) => {
                                 <div className="card-actions" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                                     { editMode && editModuleId === module.moduleId ? (
                                         <>
+                                            <Tooltip title="Cancel">
+                                                <div style={{ backgroundColor: '#FFE5E5', borderRadius: '50%', padding: '5px 6px', border: '2px solid #FF0808', cursor:"pointer" }} onClick={cancelUpdateModule}>
+                                                    <BsXLg style={{ color: '#FF0808', fontSize: '18px', margin:"-4px 1px" }} />
+                                                </div>
+                                            </Tooltip>
                                             <Tooltip title="Save">
                                                 <div style={{ backgroundColor: '#FFF6E8', borderRadius: '50%', padding: '3px 5px', border: '2px solid #FCAC20', cursor:"pointer" }} onClick={updateModule}>
                                                     <MdDone style={{ color: '#FCAC20', fontSize: '25px', padding:"2px" }} />
@@ -342,7 +354,7 @@ const ManageModule = (props) => {
                     <Button type='primary' style={{ width: '200px' }} onClick={()=>{
                         props.resetModule_();
                         navigate("/courses");
-                    }}>Proccess</Button>
+                    }}>Process</Button>
                 </div>
             )}
 

@@ -87,7 +87,21 @@ const initialAddCourseCriteriaState = {
     loading: false,
     error: null
 }
-
+const initialFetchCourseProgressListByUserIdState = {
+    response: {},
+    loading: false,
+    error: null
+}
+const initialFetchUserProgressListByCourseIdState = {
+    response: {},
+    loading: false,
+    error: null
+}
+const initialFetchCourseProgressDetailState = {
+    response: {},
+    loading: false,
+    error: null
+}
 
 export function courseListReducer(state = initialCoursesState, action) {
     switch (action.type) {
@@ -138,6 +152,12 @@ export function courseDetailReducer(state = initialCourseDetailState, action) {
                 ...state,
                 loading: false,
                 response: action.message
+            }
+        case type.CLEAR_COURSE_DETAIL:
+            return {
+                ...state,
+                loading: true,
+                response: {}
             }
         default:
             return state
@@ -561,6 +581,90 @@ export function addCourseCriteriaReducer(state = initialAddCourseCriteriaState, 
                 response: action.data
             }
         case type.ADD_COURSE_CRITERIA_FAILURE:
+            closeLoader();
+            OpenNotification("error", "Error", action.message);
+            return {
+                ...state,
+                loading: false,
+                response: action.message
+            }
+        default:
+            return state
+    }
+}
+
+export function fetchCourseProgressListByUserIdReducer(state = initialFetchCourseProgressListByUserIdState, action) {
+    switch (action.type) {
+        case type.FETCH_COURSE_PROGRESS_LIST_BY_USER_ID:
+            openLoader();
+            return {
+                ...state,
+                loading: true
+            }
+        case type.FETCH_COURSE_PROGRESS_LIST_BY_USER_ID_SUCCESS:
+            closeLoader();
+            return {
+                ...state,
+                loading: false,
+                response: action.data.data
+            }
+        case type.FETCH_COURSE_PROGRESS_LIST_BY_USER_ID_FAILURE:
+            closeLoader();
+            OpenNotification("error", "Error", action.message);
+            return {
+                ...state,
+                loading: false,
+                response: action.message
+            }
+        default:
+            return state
+    }
+}
+
+export function fetchUserProgressListByCourseIdReducer(state = initialFetchUserProgressListByCourseIdState, action) {
+    switch (action.type) {
+        case type.FETCH_USER_PROGRESS_LIST_BY_COURSE_ID:
+            openLoader();
+            return {
+                ...state,
+                loading: true
+            }
+        case type.FETCH_USER_PROGRESS_LIST_BY_COURSE_ID_SUCCESS:
+            closeLoader();
+            return {
+                ...state,
+                loading: false,
+                response: action.data.data
+            }
+        case type.FETCH_USER_PROGRESS_LIST_BY_COURSE_ID_FAILURE:
+            closeLoader();
+            OpenNotification("error", "Error", action.message);
+            return {
+                ...state,
+                loading: false,
+                response: action.message
+            }
+        default:
+            return state
+    }
+}
+
+export function fetchCourseProgressDetailReducer(state = initialFetchCourseProgressDetailState, action) {
+    switch (action.type) {
+        case type.FETCH_COURSE_PROGRESS_DETAIL:
+            openLoader();
+            return {
+                ...state,
+                loading: true
+            }
+        case type.FETCH_COURSE_PROGRESS_DETAIL_SUCCESS:
+            closeLoader();
+            return {
+                ...state,
+                loading: false,
+                response: action.data.data
+            }
+        case type.FETCH_COURSE_PROGRESS_DETAIL_FAILURE:
             closeLoader();
             OpenNotification("error", "Error", action.message);
             return {

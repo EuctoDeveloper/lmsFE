@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 import {analyticsReducer, forgotPasswordReducer, loginReducer, resetPasswordReducer, userReducer} from "./common/authReducer";
 import { activateUserReducer, adminListReducer, createUserReducer, customerListReducer, deactivateUserReducer, staffListReducer, updateUserReducer, userDetailReducer } from "./users/userReducer";
-import { activateCourseReducer, activateLessonReducer, activateModuleReducer, addCourseCriteriaReducer, addCourseReducer, addLessonReducer, addModuleReducer, courseDetailReducer, courseListReducer, deactivateCourseReducer, deactivateLessonReducer, deactivateModuleReducer, lessonDetailReducer, lessonUpdateReducer, modulesListReducer, updateCourseReducer, updateModuleReducer } from "./courses/courseReducer";
+import { activateCourseReducer, activateLessonReducer, activateModuleReducer, addCourseCriteriaReducer, addCourseReducer, addLessonReducer, addModuleReducer, courseDetailReducer, courseListReducer, deactivateCourseReducer, deactivateLessonReducer, deactivateModuleReducer, fetchCourseProgressDetailReducer, fetchCourseProgressListByUserIdReducer, fetchUserProgressListByCourseIdReducer, lessonDetailReducer, lessonUpdateReducer, modulesListReducer, updateCourseReducer, updateModuleReducer } from "./courses/courseReducer";
 import { addDepartmentReducer, addLocationReducer, fetchDepartmentReducer, fetchDepartmentsReducer, fetchLocationReducer, fetchLocationsReducer, updateDepartmentReducer, updateLocationReducer, fetchBranchesReducer, fetchBranchReducer, updateBranchReducer, addBranchReducer, fetchDesignationsReducer, fetchDesignationReducer, updateDesignationReducer, addDesignationReducer, fetchGroupsReducer, fetchGroupReducer, updateGroupReducer, addGroupReducer, fetchCentresReducer, fetchCentreReducer, updateCentreReducer, addCentreReducer } from "./masters/mastersReducer";
 // import posts from "./postReducer";
 
@@ -60,6 +60,10 @@ const rootReducer = combineReducers({
     analytics: analyticsReducer,
     deactivateCourse: deactivateCourseReducer,
     activateCourse: activateCourseReducer,
+    courseProgressList: fetchCourseProgressListByUserIdReducer,
+    userProgressList: fetchUserProgressListByCourseIdReducer,
+    courseProgressDetail: fetchCourseProgressDetailReducer,
+
 });
 
 export default rootReducer;

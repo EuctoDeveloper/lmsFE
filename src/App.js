@@ -24,6 +24,10 @@ import WebinarList from './pages/Webinars/WebinarList';
 import ManageWebinar from './pages/Webinars/ManageWebinar';
 import ForgotPassword from './pages/Auth/ForgotPassword';
 import { NO_TOKEN_URL } from './constants/helper';
+import TrackUserList from './pages/Progress/TrackUserList';
+import TrackCourseList from './pages/Progress/TrackCourseList';
+import CourseProgress from './pages/Progress/CourseProgress';
+import AssesmentProgress from './pages/Progress/AssesmentProgress';
 function App(props) {  
   useEffect(() => {
     if(!props.user){
@@ -72,6 +76,10 @@ function App(props) {
               <Route path=":master/:id" element={<ManageMaster />} />
             </Route>
             <Route path="/learner-progress" element={<LearnerProgress />} />
+            <Route path="/track/course/:id" element={<TrackUserList />} />
+            <Route path="/track/user/:id" element={<TrackCourseList />} />
+            <Route path="/progress/course/:userId/:courseId" element={<CourseProgress />} />
+            <Route path="/progress/assessment/:courseId/:userId/:moduleId/:lessonId" element={<AssesmentProgress />} />
             <Route path="/meetings" element={<WebinarList />} />
             <Route path="/webinar/add" element={<ManageWebinar />} />
           </Route>

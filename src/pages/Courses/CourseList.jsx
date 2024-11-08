@@ -4,7 +4,7 @@ import { DownloadOutlined, EditOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import AppBody from '../../components/Layout/AppBody';
 import { connect } from 'react-redux';
-import { activateCourseAction, deactivateCourseAction, getCourses } from '../../store/action/courses/courseAction';
+import { activateCourseAction, clearCourse, deactivateCourseAction, getCourses } from '../../store/action/courses/courseAction';
 import { downloadCSV } from '../../constants/helper';
 import moment from 'moment/moment';
 import { BsXLg } from 'react-icons/bs';
@@ -202,7 +202,7 @@ const CourseList = (props) => {
     }, [props.courseList]);
 
     return (
-        <AppBody heading={"Manage Course"} title="Course List" extra={<Button type="primary" onClick={()=>navigate("/add-course")}>Add New Course</Button>}>
+        <AppBody heading={"Manage Course"} title="Course List" extra={<Button type="primary" onClick={()=>{props.clearCourse_();navigate("/add-course")}}>Add New Course</Button>}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
                 <Button icon={<DownloadOutlined />} onClick={
                     () => downloadCSV(
@@ -265,6 +265,7 @@ const mapDispatchToProps = dispatch => ({
     getCourses_: () => dispatch(getCourses()),
     activateCourse_: (id) => dispatch(activateCourseAction(id)),
     deactivateCourse_: (id) => dispatch(deactivateCourseAction(id)),
+    clearCourse_: ()=>dispatch(clearCourse())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CourseList);

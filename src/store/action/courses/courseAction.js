@@ -12,6 +12,11 @@ export function getCourse(data) {
         payload: data
     }
 }
+export function clearCourse() {
+    return {
+        type: type.CLEAR_COURSE_DETAIL,
+    }
+}
 export function updateCourse(id, data) {
     return {
         type: type.UPDATE_COURSE,

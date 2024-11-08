@@ -1,7 +1,7 @@
 import { all } from 'redux-saga/effects'
 import { watchFetchAnalyticsSaga, watchFetchLoginSaga, watchForgotPasswordSaga, watchResetPasswordSaga } from './common/AuthSaga'
 import { watchActivateUserSaga, watchCreateAdminSaga, watchCreateCustomerSaga, watchCreateStaffSaga, watchDeactivateUserSaga, watchFetchAdminListSaga, watchFetchCustomerListSaga, watchFetchStaffListSaga, watchFetchUserDetailSaga, watchUpdateAdminSaga, watchUpdateCustomerSaga, watchUpdateStaffSaga } from './users/userSaga'
-import { watchActivateCourseSaga, watchActivateLessonSaga, watchActivateModuleSaga, watchAddCourseCriteriaSaga, watchAddCourseSaga, watchAddLessonSaga, watchAddModuleSaga, watchDeactivateCourseSaga, watchDeactivateLessonSaga, watchDeactivateModuleSaga, watchFetchCourseDetailSaga, watchFetchCoursesSaga, watchFetchLessonDetailSaga, watchFetchModulesListSaga, watchUpdateCourseSaga, watchUpdateLessonSaga, watchUpdateModuleSaga } from './courses/courseSaga'
+import { watchActivateCourseSaga, watchActivateLessonSaga, watchActivateModuleSaga, watchAddCourseCriteriaSaga, watchAddCourseSaga, watchAddLessonSaga, watchAddModuleSaga, watchDeactivateCourseSaga, watchDeactivateLessonSaga, watchDeactivateModuleSaga, watchFetchCourseDetailSaga, watchFetchCourseProgressDetailSaga, watchFetchCourseProgressListByUserIdSaga, watchFetchCoursesSaga, watchFetchLessonDetailSaga, watchFetchModulesListSaga, watchFetchUserProgressListByCourseIdSaga, watchUpdateCourseSaga, watchUpdateLessonSaga, watchUpdateModuleSaga } from './courses/courseSaga'
 import { watchFetchLocations, watchFetchLocationDetail, watchAddLocation, watchUpdateLocation, watchFetchDepartments, watchFetchDepartmentDetail, watchAddDepartment, watchUpdateDepartment, watchFetchBranches, watchFetchBranchDetail, watchAddBranch, watchUpdateBranch, watchFetchDesignations, watchFetchDesignationDetail, watchAddDesignation, watchUpdateDesignation, watchFetchCentres, watchFetchCentreDetail, watchAddCentre, watchUpdateCentre, watchFetchGroups, watchFetchGroupDetail, watchAddGroup, watchUpdateGroup } from './masters/masterSaga'
 
 export default function* rootSaga() {
@@ -63,5 +63,8 @@ export default function* rootSaga() {
         watchActivateCourseSaga(),
         watchDeactivateUserSaga(),
         watchActivateUserSaga(),
+        watchFetchCourseProgressListByUserIdSaga(),
+        watchFetchUserProgressListByCourseIdSaga(),
+        watchFetchCourseProgressDetailSaga(),
     ])
 }

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { getCustomers, getStaffs } from '../../store/action/users/usersAction';
 import { getCourses } from '../../store/action/courses/courseAction';
 import { downloadCSV } from '../../constants/helper';
+import { useNavigate } from 'react-router-dom';
 
 const LearnerProgress = (props) => {
     const [activeTab, setActiveTab] = useState('user');
@@ -13,6 +14,7 @@ const LearnerProgress = (props) => {
     const [customerList, setCustomerList] = useState([]);
     const [staffList, setStaffList] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -169,7 +171,7 @@ const LearnerProgress = (props) => {
                 title: 'Action',
                 key: 'action',
                 render: (text, record) => (
-                    <Button type="primary">Track</Button>
+                    <Button type="primary" onClick={()=>navigate(`/track/user/${record.userId}?user=${record.firstName} ${record.lastName}`)}>Track</Button>
                 ),
             },
         ],
@@ -214,7 +216,7 @@ const LearnerProgress = (props) => {
                 title: 'Action',
                 key: 'action',
                 render: (text, record) => (
-                    <Button type="primary">Track</Button>
+                    <Button type="primary"  onClick={()=>navigate(`/track/course/${record.courseId}?course=${record.title}`)}>Track</Button>
                 ),
             },
         ],

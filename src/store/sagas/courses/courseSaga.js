@@ -1,6 +1,6 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
 import * as type from '../../types';
-import { activateCourseApi, activateLessonApi, activateModuleApi, addCourseApi, addCourseCriteriaApi, addLessonApi, addModuleApi, deactivateCourseApi, deactivateLessonApi, deactivateModuleApi, getCourseDetailApi, getCoursesApi, getLessonApi, getModulesAPi, updateCourseApi, updateLessonApi, updateModulespApi } from '../../api/courses/courseApi';
+import { activateCourseApi, activateLessonApi, activateModuleApi, addCourseApi, addCourseCriteriaApi, addLessonApi, addModuleApi, deactivateCourseApi, deactivateLessonApi, deactivateModuleApi, getCourseDetailApi, getCourseProgressDetailApi, getCourseProgressListByUserIdApi, getCoursesApi, getLessonApi, getModulesAPi, getUserProgressListByCourseIdApi, updateCourseApi, updateLessonApi, updateModulespApi } from '../../api/courses/courseApi';
 
 function* fetchCoursesSaga(action) {
     try {
@@ -138,6 +138,30 @@ function* addCourseCriteriaSaga(action) {
        yield put({type: type.ADD_COURSE_CRITERIA_FAILURE, message: e.response.data.message});
     }
 }
+function* fetchCourseProgressListByUserIdSaga(action) {
+    try {
+       const data = yield call(getCourseProgressListByUserIdApi, action.payload);
+       yield put({type: type.FETCH_COURSE_PROGRESS_LIST_BY_USER_ID_SUCCESS, data});
+    } catch (e) {
+       yield put({type: type.FETCH_COURSE_PROGRESS_LIST_BY_USER_ID_FAILURE, message: e.response.data.message});
+    }
+}
+function* fetchUserProgressListByCourseIdSaga(action) {
+    try {
+       const data = yield call(getUserProgressListByCourseIdApi, action.payload);
+       yield put({type: type.FETCH_USER_PROGRESS_LIST_BY_COURSE_ID_SUCCESS, data});
+    } catch (e) {
+       yield put({type: type.FETCH_USER_PROGRESS_LIST_BY_COURSE_ID_FAILURE, message: e.response.data.message});
+    }
+}
+function* fetchCourseProgressDetailSaga(action) {
+    try {
+       const data = yield call(getCourseProgressDetailApi, action.payload.courseId, action.payload.userId);
+       yield put({type: type.FETCH_COURSE_PROGRESS_DETAIL_SUCCESS, data});
+    } catch (e) {
+       yield put({type: type.FETCH_COURSE_PROGRESS_DETAIL_FAILURE, message: e.response.data.message});
+    }
+}
  
 
 
@@ -191,4 +215,13 @@ export function* watchDeactivateCourseSaga() {
 }
 export function* watchActivateCourseSaga() {
     yield takeEvery(type.ACTIVATE_COURSE, activateCourseSaga);
+}
+export function* watchFetchCourseProgressListByUserIdSaga() {
+    yield takeEvery(type.FETCH_COURSE_PROGRESS_LIST_BY_USER_ID, fetchCourseProgressListByUserIdSaga);
+}
+export function* watchFetchUserProgressListByCourseIdSaga() {
+    yield takeEvery(type.FETCH_USER_PROGRESS_LIST_BY_COURSE_ID, fetchUserProgressListByCourseIdSaga);
+}
+export function* watchFetchCourseProgressDetailSaga() {
+    yield takeEvery(type.FETCH_COURSE_PROGRESS_DETAIL, fetchCourseProgressDetailSaga);
 }

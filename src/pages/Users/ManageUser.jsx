@@ -99,6 +99,7 @@ const ManageUser = (props) => {
 
     const handleSubmit = (values) => {
         setNavigateHelper(true);
+        values.userType = userType;
         if(!id)
             props.createUser_(values);
         else

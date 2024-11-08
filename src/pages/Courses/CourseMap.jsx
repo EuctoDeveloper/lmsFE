@@ -187,9 +187,9 @@ const CourseMap = (props) => {
     const filteredData = courses.filter(course=>{
         return (
             (userType === course.criteriaUserType) 
-            && (filters.first.length === 0 || filters.first.some(id => course.first.includes(id.toString())) || course.first.includes("*"))
-            && (filters.second.length === 0 || filters.second.some(id => course.second.includes(id.toString())) || course.second.includes("*"))
-            && (filters.third.length === 0 || filters.third.some(id => course.third.includes(id.toString())) || course.third.includes("*"))
+            && (filters.first.length === 0 || filters.first.some(id => course.first.includes(id)) || course.first.includes("*"))
+            && (filters.second.length === 0 || filters.second.some(id => course.second.includes(id)) || course.second.includes("*"))
+            && (filters.third.length === 0 || filters.third.some(id => course.third.includes(id)) || course.third.includes("*"))
         );
     })
 
@@ -216,7 +216,6 @@ const CourseMap = (props) => {
                 if(item.includes("*")) {
                     return (<p>All</p>)
                 } else {
-                    console.log(item, locations, locations.filter(i=>console.log(i.locationId.toString() || item.includes(i.locationId))));
                     return (<p>{(userType === 'client' ? locations:departments )?.filter(i=>item.includes(i[userType==='client'? "locationId" : "departmentId"])).map(i=>i.name).join(", ")}</p>)
                 }
             }
@@ -319,40 +318,26 @@ const CourseMap = (props) => {
                                 style={{ width: 'calc(30% - 16px)', marginRight: 8 }}
                                 onChange={(value) => handleFilterChange('first', value)}
                                 placeholder={userType === 'client' ? 'Location' : userType === 'employee' ? 'Department' : 'No Filters'}
-                            >
-                                {userType === 'client' && <>
-                                    {(locations && Array.isArray(locations)?locations:[]).map(location => <Option value={location.locationId}>{location.name}</Option>)}
-                                </>}
-                                {userType === 'employee' && <>
-                                    {(departments && Array.isArray(departments)?departments:[]).map(department => <Option value={department.departmentId}>{department.name}</Option>)}
-                                </>}
-                            </Select>
+                                options={userType === 'client' ? locations.map(item=>({label: item.name, value:item.locationId})) : departments.map(item=>({label: item.name, value:item.departmentId}))}
+                                optionFilterProp="label"
+                            />
                             <Select
                                 mode="multiple"
+                                showSearch
                                 style={{ width: 'calc(30% - 16px)', marginRight: 8 }}
                                 onChange={(value) => handleFilterChange('second', value)}
                                 placeholder={userType === 'client' ? 'Center' : userType === 'employee' ? 'Branch' : 'No Filters'}
-                            >
-                                {userType === 'client' && <>
-                                    {(centers && Array.isArray(centers)?centers:[]).map(center => <Option value={center.centreId}>{center.name}</Option>)}
-                                </>}
-                                {userType === 'employee' && <>
-                                    {(branches && Array.isArray(branches)?branches:[]).map(branch => <Option value={branch.branchId}>{branch.name}</Option>)}
-                                </>}
-                            </Select>
+                                options={userType === 'client' ? centers.map(item=>({label: item.name, value:item.centreId})) : branches.map(item=>({label: item.name, value:item.branchId}))}
+                                optionFilterProp="label"
+                            />
                             <Select
                                 mode="multiple"
                                 style={{ width: 'calc(30% - 16px)', marginRight: 8 }}
                                 onChange={(value) => handleFilterChange('third', value)}
                                 placeholder={userType === 'client' ? 'Group' : userType === 'employee' ? 'Designation' : 'No Filters'}
-                            >
-                                {userType === 'client' && <>
-                                    {(groups && Array.isArray(groups)?groups:[]).map(group => <Option value={group.groupId}>{group.name}</Option>)}
-                                </>}
-                                {userType === 'employee' && <>
-                                    {(designations && Array.isArray(designations)?designations:[]).map(designation => <Option value={designation.designationId}>{designation.name}</Option>)}
-                                </>}
-                            </Select>
+                                options={userType === 'client' ? groups.map(item=>({label: item.name, value:item.groupId})) : designations.map(item=>({label: item.name, value:item.designationId}))}
+                                optionFilterProp="label"
+                            />
                             <Button style={{ width: 'calc(10% - 16px)', marginRight: 8 }} type="primary">Filter</Button>
                         </div>
                     </>
@@ -383,37 +368,33 @@ const CourseMap = (props) => {
                         {selectedCourse?.criteriaUserType !== 'all' && (
                             <>
                                 <Form.Item label={selectedCourse?.criteriaUserType === 'client' ? 'Location' : 'Department'} rules={[{ validator: validateDropdown}]}>
-                                    <Select defaultValue={selectedCourse?.first} value={selectedCourse?.first} mode="multiple" onChange={(value) => {setSelectedCourse({ ...selectedCourse, first: checkAll(value, "first") })}}>
-                                        <Option value="*">All</Option>
-                                        {selectedCourse?.criteriaUserType === 'client' && <>
-                                            {locations?.map(location => <Option value={location.locationId}>{location.name}</Option>)}
-                                        </>}
-                                        {selectedCourse?.criteriaUserType === 'employee' && <>
-                                            {departments?.map(department => <Option value={department.departmentId}>{department.name}</Option>)}
-                                        </>}
-                                    </Select>
+                                    <Select 
+                                        defaultValue={selectedCourse?.first} 
+                                        value={selectedCourse?.first} 
+                                        mode="multiple" 
+                                        onChange={(value) => {setSelectedCourse({ ...selectedCourse, first: checkAll(value, "first") })}} 
+                                        optionFilterProp="label"
+                                        options={[{label: "All", value: "*"}, ...(selectedCourse?.criteriaUserType === 'client' ? locations.map(item=>({label:item.name, value:item.locationId})) : departments.map(item=>({label:item.name, value:item.departmentId})))]}
+                                    />
                                 </Form.Item>
                                 <Form.Item label={selectedCourse?.criteriaUserType === 'client' ? 'Center' : 'Branch'} rules={[{ validator: validateDropdown}]}>
-                                    <Select defaultValue={selectedCourse?.second} value={selectedCourse?.second} mode="multiple" onChange={(value) => setSelectedCourse({ ...selectedCourse, second: checkAll(value, "second") })}>
-                                        <Option value="*">All</Option>
-                                        {selectedCourse?.criteriaUserType === 'client' && <>
-                                            {centers?.map(center => <Option value={center.centreId}>{center.name}</Option>)}
-                                        </>}
-                                        {selectedCourse?.criteriaUserType === 'employee' && <>
-                                            {branches?.map(branch => <Option value={branch.branchId}>{branch.name}</Option>)}
-                                        </>}
-                                    </Select>
+                                    <Select
+                                        defaultValue={selectedCourse?.second} 
+                                        value={selectedCourse?.second} mode="multiple" 
+                                        onChange={(value) => setSelectedCourse({ ...selectedCourse, second: checkAll(value, "second") })}
+                                        optionFilterProp="label"
+                                        options={[{label: "All", value: "*"}, ...(selectedCourse?.criteriaUserType === 'client' ? centers.map(item=>({label:item.name, value:item.centreId})) : branches.map(item=>({label:item.name, value:item.branchId})))]}
+                                   />
                                 </Form.Item>
                                 <Form.Item label={selectedCourse?.criteriaUserType === 'client' ? 'Group' : 'Designation'} rules={[{ validator: validateDropdown}]}>
-                                    <Select defaultValue={selectedCourse?.third} value={selectedCourse?.third} mode="multiple" onChange={(value) => setSelectedCourse({ ...selectedCourse, third: checkAll(value, "third") })}>
-                                        <Option value="*">All</Option>
-                                        {selectedCourse?.criteriaUserType === 'client' && <>
-                                            {groups?.map(group => <Option value={group.groupId}>{group.name}</Option>)}
-                                        </>}
-                                        {selectedCourse?.criteriaUserType === 'employee' && <>
-                                            {designations?.map(designation => <Option value={designation.designationId}>{designation.name}</Option>)}
-                                        </>}
-                                    </Select>
+                                    <Select 
+                                        defaultValue={selectedCourse?.third} 
+                                        value={selectedCourse?.third} 
+                                        mode="multiple" 
+                                        onChange={(value) => setSelectedCourse({ ...selectedCourse, third: checkAll(value, "third") })}
+                                        optionFilterProp="label"
+                                        options={[{label: "All", value: "*"}, ...(selectedCourse?.criteriaUserType === 'client' ? groups.map(item=>({label:item.name, value:item.groupId})) : designations.map(item=>({label:item.name, value:item.designationId})))]}
+                                    />
                                 </Form.Item>
                             </>
                         )}

@@ -1,0 +1,14 @@
+node_modules
+build
+dist
+.env
+.DS_Store
+coverage
+*.log
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

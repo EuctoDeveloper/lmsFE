@@ -7,6 +7,7 @@ import { Content } from 'antd/es/layout/layout';
 import AppBody from '../../components/Layout/AppBody';
 import { connect } from 'react-redux';
 import { addLesson, getLesson, updateLesson } from '../../store/action/courses/courseAction';
+import OpenNotification from '../../utils/OpenNotification';
 
 const AddLesson = (props) => {
     const navigate = useNavigate();
@@ -21,8 +22,11 @@ const AddLesson = (props) => {
         maxCount: 1,      // Limit to one file
         showUploadList: true,  // If you want to show the file list
         beforeUpload: (file) => {
+            if (file.size / 1024 / 1024 > 500) {
+                OpenNotification("error","File Size Error",'File must be smaller than 500 MB!');
+                return Upload.LIST_IGNORE;
+            }
           message.success(`${file.name} selected.`);
-          // Prevent auto upload
           return false;
         },
         onRemove: (file) => {
@@ -35,7 +39,6 @@ const AddLesson = (props) => {
 
     const handleSubmit = (values) => {
         setIsUpdate(true);
-        console.log(values)
         const formData = new FormData();
         formData.append('title', values.title);
         formData.append('content', values.content);
@@ -111,7 +114,7 @@ const AddLesson = (props) => {
                     </Row>
 
                     <Form.Item
-                        label="Attachment"
+                        label="Attachment (Accepts Upto 500MB)"
                         name="attachment"
                         valuePropName="fileList"
                         getValueFromEvent={(e) => (Array.isArray(e) ? e : e && e.fileList)}
@@ -121,6 +124,7 @@ const AddLesson = (props) => {
                             name="files" 
                             listType="picture"
                             accept="video/*"
+                            maxCount={1}
                             {...draggerProps}
                         >
                             <p className="ant-upload-drag-icon">

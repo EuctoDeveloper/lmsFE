@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Input, DatePicker as AntDatePicker, Form, Alert } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
+import { Button, Input, DatePicker as AntDatePicker, Form, Alert, Upload, message } from 'antd';
 import { RiArrowGoBackLine } from "react-icons/ri";
 import AppBody from '../../components/Layout/AppBody';
 import moment from 'moment';
@@ -7,6 +7,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { addCourse, getCourse, updateCourse } from '../../store/action/courses/courseAction';
 import dayjs from 'dayjs';
+import OpenNotification from '../../utils/OpenNotification';
+import { UploadOutlined } from '@ant-design/icons';
+
 
 const AddCourse = (props) => {
     const navigate = useNavigate();
@@ -14,6 +17,10 @@ const AddCourse = (props) => {
     const [form] = Form.useForm();
     const [isDirty, setIsDirty] = useState(false);
     const [imageChanged, setImageChanged] = useState(false);
+    const [fileKey, setFileKey] = useState(Date.now()); // Unique key to reset input
+
+
+    const filesRef = useRef(null);
 
     useEffect(() => {
         if(id) {
@@ -43,6 +50,34 @@ const AddCourse = (props) => {
         }
 
     }, [props.addCourse, props.updateCourse]);
+    const draggerProps = {
+        name: 'file',
+        multiple: false,  // To allow only one file
+        maxCount: 1,      // Limit to one file
+        showUploadList: true,  // If you want to show the file list
+        beforeUpload: (file) => {
+            if (file.size / 1024 / 1024 > 10) {
+                OpenNotification("error", "File Size Error", 'File must be smaller than 10 MB!');
+                return Upload.LIST_IGNORE;
+            }
+            const validMimeTypes = ['image/jpeg', 'image/png'];
+            if (!validMimeTypes.includes(file.type)) {
+                OpenNotification("error", "File Type Error", 'File must be a JPEG or PNG image!');
+                return Upload.LIST_IGNORE;
+            }
+          message.success(`${file.name} selected.`);
+          return false;
+        },
+        onChange: () => {
+            setImageChanged(true);
+        },
+        onRemove: (file) => {
+          // Remove the file from the list if needed
+          if(filesRef && filesRef.current)
+            filesRef.current = filesRef.current.filter((f) => f.uid !== file.uid);
+          return true;
+        },
+      };
 
     const handleBackClick = () => {
         navigate('/courses');
@@ -54,9 +89,8 @@ const AddCourse = (props) => {
         formData.append('startDate', dayjs(values.startDate).format('YYYY-MM-DD'));
         formData.append('endDate', dayjs(values.endDate).format('YYYY-MM-DD'));
         formData.append('description', values.description);
-        const fileInput = document.querySelector('input[type="file"]');
-        if (fileInput.files.length > 0) {
-            formData.append('thumbnail', fileInput.files[0]);
+        if (values.image?.fileList.length > 0) {
+            formData.append('thumbnail', values.image?.fileList[0].originFileObj);
         }
         if(id) {
             props.updateCourse_(id, formData);
@@ -80,11 +114,11 @@ const AddCourse = (props) => {
             }
             style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
         >
-            { id && props.course && moment(props.course.startDate).isBefore(moment()) && (
+            { id && props.course && moment(props.course.startDate).isBefore(moment()) && props.course.courseCriteria && props.course.courseCriteria.length > 0 && (
                 <div style={{ marginBottom: '20px' }}>
                     <Alert
                         message="Warning"
-                        description="This course cannot be edited as the start date has already passed."
+                        description="This course cannot be edited as already mapped and the start date has already passed."
                         type="warning"
                         showIcon
                     />
@@ -106,19 +140,27 @@ const AddCourse = (props) => {
                             style={{ flex: 1 }}
                         >
                             <Input
-                                disabled={id && props.course && moment(props.course.startDate).isBefore(moment())}
+                                disabled={id && props.course && moment(props.course.startDate).isBefore(moment()) && props.course.courseCriteria && props.course.courseCriteria.length > 0}
                             />
                         </Form.Item>
                         <Form.Item
-                            label="Course Image"
+                            label="Course Image (Accepts Upto 10 MB)"
                             name="image"
                             rules={[
                                 { required: !id ? true: false, message: 'Please upload the course image!' },
                             ]}
                             style={{ flex: 0.5 }}
                         >
-                            <Input type="file" accept="image/jpeg,image/png" onChange={()=>setImageChanged(true)}
-                                disabled={id && props.course && moment(props.course.startDate).isBefore(moment())} />
+                            <Upload
+                                name="files" 
+                                listType="picture"
+                                accept="image/jpeg,image/png"
+                                maxCount={1}
+                                disabled={id && props.course && moment(props.course.startDate).isBefore(moment()) && props.course.courseCriteria && props.course.courseCriteria.length > 0}
+                                {...draggerProps}
+                            >
+                                <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                            </Upload>
                         </Form.Item>
                     </div>
                     <div style={{ display: 'flex', gap: '20px' }}>
@@ -129,9 +171,9 @@ const AddCourse = (props) => {
                             style={{ flex: 0.2 }}
                         >
                             <AntDatePicker
-                                disabled={id && props.course && moment(props.course.startDate).isBefore(moment())}
+                                disabled={id && props.course && moment(props.course.startDate).isBefore(moment()) && props.course.courseCriteria && props.course.courseCriteria.length > 0}
                                 disabledDate={!id ? (current) => current && current < moment().startOf('day'): null}
-                                inputReadOnly={id && props.course && moment(props.course.startDate).isBefore(moment())}
+                                inputReadOnly={id && props.course && moment(props.course.startDate).isBefore(moment()) && props.course.courseCriteria && props.course.courseCriteria.length > 0}
                             />
                         </Form.Item>
                         <Form.Item
@@ -158,7 +200,7 @@ const AddCourse = (props) => {
                             style={{ flex: 0.5 }}
                         >
                             <AntDatePicker
-                                disabled={id && props.course && moment(props.course.startDate).isBefore(moment())}
+                                disabled={id && props.course && moment(props.course.startDate).isBefore(moment()) && props.course.courseCriteria && props.course.courseCriteria.length > 0}
                                 disabledDate={(current) => current && current < moment().startOf('day')}
                                 inputReadOnly
                             />
@@ -170,10 +212,10 @@ const AddCourse = (props) => {
                         rules={[{ required: true, message: 'Please input the course description!' }]}
                     >
                         <Input.TextArea rows={5}
-                            disabled={id && props.course && moment(props.course.startDate).isBefore(moment())} />
+                            disabled={id && props.course && moment(props.course.startDate).isBefore(moment()) && props.course.courseCriteria && props.course.courseCriteria.length > 0} />
                     </Form.Item>
                 </div>
-                { !moment(props.course.startDate).isBefore(moment()) && (
+                { !(moment(props.course.startDate).isBefore(moment()) && props.course.courseCriteria && props.course.courseCriteria.length > 0) && (
 
                     <div style={{ textAlign: 'right', padding: '10px 0' }}>
                         <Button type="default" htmlType="reset" style={{ marginRight: '10px' }}>
@@ -185,7 +227,7 @@ const AddCourse = (props) => {
                     </div>
                 )} 
             
-                { id && props.course && moment(props.course.startDate).isBefore(moment()) && (
+                { id && props.course && moment(props.course.startDate).isBefore(moment()) && props.course.courseCriteria && props.course.courseCriteria.length > 0 && (
 
                     <div style={{ textAlign: 'right', padding: '10px 0' }}>
                         <Button type="primary" htmlType="button" onClick={()=>navigate(`/add-module/${id}/1`)}>

@@ -63,7 +63,6 @@ const AddAssessment = (props) => {
     const handleRemoveOption = (index) => {
         if (currentQuestion.options.length > 2) {
             let editingQuestion = {...currentQuestion};
-            console.log(editingQuestion.correctAnswer, currentQuestion.options[index]);
             if(currentQuestion.correctAnswer.toString() == currentQuestion.options[index].toString()) {
                 editingQuestion.correctAnswer = "";
                 form.setFieldValue('correctAnswer', "");
