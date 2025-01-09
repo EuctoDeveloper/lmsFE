@@ -126,12 +126,15 @@ const ManageUser = (props) => {
             <Form form={form} layout="vertical" onFinish={handleSubmit} requiredMark={false}>
                 <Row gutter={16}>
                     <Col span={8}>
-                        <Form.Item name="firstName" label="First Name" rules={[{ required: true, message: 'Please enter first name' }]}>
+                        <Form.Item name="firstName" label="First Name" rules={[{ required: true, message: 'Please enter first name' }, 
+                            { whitespace: true, message: 'First Name cannot be empty' }]}>
                             <Input />
                         </Form.Item>
                     </Col>
                     <Col span={8}>
-                        <Form.Item name="lastName" label="Last Name" rules={[{ required: true, message: 'Please enter last name' }]}>
+                        <Form.Item name="lastName" label="Last Name" rules={[{ required: true, message: 'Please enter last name' },
+                            { whitespace: true, message: 'Last Name cannot be empty' }
+                        ]}>
                             <Input />
                         </Form.Item>
                     </Col>
@@ -211,7 +214,8 @@ const ManageUser = (props) => {
                     )}
                     <Row gutter={16}>
                         <Col span={8}>
-                            <Form.Item name="email" label="Email ID" rules={[{ required: true, message: 'Please enter email id' }]}>
+                            <Form.Item name="email" label="Email ID" rules={[{ required: true, message: 'Please enter email id' }, 
+                            { whitespace: true, message: 'Email Id cannot be empty' }]}>
                                 <Input />
                             </Form.Item>
                         </Col>

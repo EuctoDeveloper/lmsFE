@@ -153,9 +153,10 @@ const AddAssessment = (props) => {
                                 <h2 style={{ fontWeight: "700" }}>Create Assessment</h2>
                                 <div style={{ border:"1px solid #4285F4", borderLeft: "10px solid #4285F4", padding: '20px',}}>
                                     <Form.Item
-                                        label="Question"
+                                        label="Enter Question"
                                         name="question"
-                                        rules={[{ required: true, message: 'Question cannot be empty' }]}
+                                        rules={[{ required: true, message: 'Question cannot be empty' }, 
+                                            { whitespace: true, message: 'Question cannot be empty' }]}
                                         form={form}
                                     >
                                         <Input
@@ -172,7 +173,8 @@ const AddAssessment = (props) => {
                                             key={index}
                                             label={`Option ${index + 1}`}
                                             name={`option${index}`}
-                                            rules={[{ required: true, message: 'Option cannot be empty' }]}
+                                            rules={[{ required: true, message: 'Option cannot be empty' }, 
+                                                { whitespace: true, message: 'Option cannot be empty' }]}
                                         >
                                             <p style={{display: "none"}}>{option}</p>
                                             <Input
@@ -201,7 +203,8 @@ const AddAssessment = (props) => {
                                         <Form.Item
                                             label="Correct Answer"
                                             name="correctAnswer"
-                                            rules={[{ required: true, message: 'Correct answer cannot be empty' }]}
+                                            rules={[{ required: true, message: 'Correct answer cannot be empty' }, 
+                                                { whitespace: true, message: 'Correct answer cannot be empty' }]}
                                             style={{ flex: 1, marginRight: '170px' }}
                                         >
                                             <Select

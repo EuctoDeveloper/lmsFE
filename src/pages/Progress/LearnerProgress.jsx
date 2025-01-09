@@ -64,7 +64,7 @@ const LearnerProgress = (props) => {
     }, [props.customerList, props.staffList]);
     useEffect(() => {
         if(props.courseList && props.courseList.length > 0){
-            setCourses(props.courseList.map(course => {
+            setCourses(props.courseList.filter(item => item.courseCriteria.length > 0).map(course => {
                 let status = 'Deactivated';
                     if(course.isActive) {
                         const today = new Date();

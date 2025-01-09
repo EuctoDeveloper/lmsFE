@@ -8,7 +8,7 @@ import { NO_TOKEN_URL } from "../../constants/helper";
 
 
 const axios_config = axios.create({
-    baseURL: `https://visionfund.dev`
+    baseURL: `https://lms.visionfundindia.in`
 })
 
 

@@ -32,7 +32,7 @@ const ManageMaster = (props) => {
     useEffect(() => {
         if (id && props[master]) {
             form.setFieldsValue({
-                name: props[master].name,
+                name: props[master === "centre" ? "center": master].name,
             });
         }
     }, [props[master]]);
@@ -65,7 +65,13 @@ const ManageMaster = (props) => {
             <Form form={form} layout="vertical" onFinish={handleSubmit} requiredMark={false}>
                 <Row gutter={16}>
                     <Col span={8}>
-                        <Form.Item name="name" label="Name" rules={[{ required: true, message: 'Please enter name' }]}>
+                        <Form.Item
+                            name="name"
+                            label="Name"
+                            rules={[
+                                { required: true, message: 'Please enter name' }, 
+                                { whitespace: true, message: 'Name cannot be empty' }
+                            ]}>
                             <Input />
                         </Form.Item>
                     </Col>

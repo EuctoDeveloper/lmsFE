@@ -75,7 +75,7 @@ const ManageModule = (props) => {
         navigate(-1);
     };
     const addModule = () => {
-        if(!moduleName || moduleName === '') {
+        if (!moduleName || moduleName.trim() === '') {
             OpenNotification('error', 'Module name is required');
             return;
         }
@@ -83,6 +83,10 @@ const ManageModule = (props) => {
         props.addModule_(data);
     };
     const updateModule = () => {
+        if (!editModuleName || editModuleName.trim() === '') {
+            OpenNotification('error', 'Module name is required');
+            return;
+        }
         let data = {title: editModuleName};
         let idToUpdate = editModuleId;
         props.updateModule_(idToUpdate, data);

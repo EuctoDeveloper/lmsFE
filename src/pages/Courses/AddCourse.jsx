@@ -136,7 +136,8 @@ const AddCourse = (props) => {
                         <Form.Item
                             label="Course Title"
                             name="title"
-                            rules={[{ required: true, message: 'Please input the course title!' }]}
+                            rules={[{ required: true, message: 'Please input the course title!' }, 
+                                { whitespace: true, message: 'Course title cannot be empty' }]}
                             style={{ flex: 1 }}
                         >
                             <Input
@@ -209,7 +210,8 @@ const AddCourse = (props) => {
                     <Form.Item
                         label="Course Description"
                         name="description"
-                        rules={[{ required: true, message: 'Please input the course description!' }]}
+                        rules={[{ required: true, message: 'Please input the course description!' }, 
+                            { whitespace: true, message: 'Course description cannot be empty' }]}
                     >
                         <Input.TextArea rows={5}
                             disabled={id && props.course && moment(props.course.startDate).isBefore(moment()) && props.course.courseCriteria && props.course.courseCriteria.length > 0} />

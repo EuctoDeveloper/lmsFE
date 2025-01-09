@@ -3,16 +3,24 @@ import { connect } from "react-redux";
 import PageHeading from "../../components/PageHeading";
 import { UserOutlined, TeamOutlined, BookOutlined } from '@ant-design/icons';
 import { getAnalytics } from "../../store/action/common/authAction";
+import { Col, Row } from "antd";
 
 
 function Dashboard(props) {
-  const [analytics, setAnalytics] = React.useState([0, 0, 0]);
+  const [analytics, setAnalytics] = React.useState([0, 0, 0, 0, 0, 0]);
   React.useEffect(() => {
     props.getAnalytics_();
   }, []);
   React.useEffect(() => {
     if (props.analytics) {
-      setAnalytics([props.analytics.employeeCount, props.analytics.customerCount, props.analytics.courseCount]);
+      setAnalytics([
+        props.analytics.employeeCount,
+        props.analytics.customerCount,
+        props.analytics.courseCount,
+        props.analytics.employeeActiveCount,
+        props.analytics.customerActiveCount,
+        props.analytics.courseActiveCount,
+      ]);
     }
   }, [props.analytics]);
   const analyticsData = [
@@ -22,7 +30,7 @@ function Dashboard(props) {
       count: analytics[0]
     },
     {
-      icon: <UserOutlined style={{ color: "#4859FF", backgroundColor: "#ECECEC", padding: "10px", borderRadius: "50%" }} />,
+      icon: <UserOutlined style={{ color: "#FF9800", backgroundColor: "#FFF3E0", padding: "10px", borderRadius: "50%" }} />,
       text: "Total Clients",
       count: analytics[1] 
     },
@@ -30,6 +38,21 @@ function Dashboard(props) {
       icon: <BookOutlined style={{ color: "#FF9800", backgroundColor: "#FFF3E0", padding: "10px", borderRadius: "50%" }} />,
       text: "Total Courses",
       count: analytics[2]
+    },
+    {
+      icon: <TeamOutlined style={{ color: "#4859FF", backgroundColor: "#ECECEC", padding: "10px", borderRadius: "50%" }} />,
+      text: "Active Staffs",
+      count: analytics[3]
+    },
+    {
+      icon: <UserOutlined style={{ color: "#4859FF", backgroundColor: "#ECECEC", padding: "10px", borderRadius: "50%" }} />,
+      text: "Active Clients",
+      count: analytics[4] 
+    },
+    {
+      icon: <BookOutlined style={{ color: "#4859FF", backgroundColor: "#ECECEC", padding: "10px", borderRadius: "50%" }} />,
+      text: "Active Courses",
+      count: analytics[5]
     }
   ];
   const AnalyticsCard = ({ icon, text, count }) => {
@@ -41,7 +64,7 @@ function Dashboard(props) {
         margin: "10px", 
         border: "1px solid #ddd", 
         borderRadius: "8px", 
-        width: "30%",
+        width: "85%",
         backgroundColor: "#fff" }}
       >
         <div style={{ fontSize: "24px", marginRight: "20px" }}>{icon}</div>
@@ -56,12 +79,13 @@ function Dashboard(props) {
   return (
     <div>
       <PageHeading heading="Dashboard" />
-    
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <Row>
           {analyticsData.map((data, index) => (
-            <AnalyticsCard key={index} icon={data.icon} text={data.text} count={data.count} />
+            <Col md={8}>
+              <AnalyticsCard key={index} icon={data.icon} text={data.text} count={data.count} />
+            </Col>
           ))}
-        </div>
+        </Row>
     </div>
   );
 }
