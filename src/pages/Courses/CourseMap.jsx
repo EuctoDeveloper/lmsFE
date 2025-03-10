@@ -8,8 +8,6 @@ import { PiShareNetworkBold } from 'react-icons/pi';
 import { useNavigate } from 'react-router-dom';
 import { Modal, Form, Input } from 'antd';
 import { getBranchesAction, getCentersAction, getDepartmentsAction, getDesignationsAction, getGroupsAction, getLocationsAction } from '../../store/action/masters/masterAction';
-import moment from 'moment';
-import OpenNotification from '../../utils/OpenNotification';
 
 const { Option } = Select;
 
@@ -99,21 +97,6 @@ const CourseMap = (props) => {
             data.location = selectedCourse.first.includes('*') ? ['*'] : selectedCourse.first;
             data.center = selectedCourse.second.includes('*') ? ['*'] : selectedCourse.second;
             data.group = selectedCourse.third.includes('*') ? ['*'] : selectedCourse.third;
-            if(data.location.length === 0) {
-                OpenNotification("error", "Error", 'Select atleast one Location');
-                setIsDirty(false);
-                return;
-            }
-            if(data.center.length === 0) {
-                OpenNotification("error", "Error", 'Select atleast one Center');
-                setIsDirty(false);
-                return;
-            }
-            if(data.group.length === 0) {
-                OpenNotification("error", "Error", 'Select atleast one Group');
-                setIsDirty(false);
-                return;
-            }
             data.branch = [];
             data.designation = [];
             data.department = [];
@@ -121,21 +104,6 @@ const CourseMap = (props) => {
             data.department = selectedCourse.first.includes('*') ? ['*'] : selectedCourse.first;
             data.branch = selectedCourse.second.includes('*') ? ['*'] : selectedCourse.second;
             data.designation = selectedCourse.third.includes('*') ? ['*'] : selectedCourse.third;
-            if(data.department.length === 0) {
-                OpenNotification("error", "Error", 'Select atleast one Department');
-                setIsDirty(false);
-                return;
-            }
-            if(data.branch.length === 0) {
-                OpenNotification("error", "Error", 'Select atleast one Branch');
-                setIsDirty(false);
-                return;
-            }
-            if(data.designation.length === 0) {
-                OpenNotification("error", "Error", 'Select atleast one Designation');
-                setIsDirty(false);
-                return;
-            }
             data.location = [];
             data.center = [];
             data.group = [];
@@ -178,7 +146,7 @@ const CourseMap = (props) => {
                         const startDate = new Date(course.startDate);
                         const endDate = new Date(course.endDate);
 
-                        if (moment(today).isSameOrAfter(moment(startDate), 'day') &&  moment(today).isBefore(moment(endDate), 'day')) {
+                        if (today.toDateString() >= startDate.toDateString() && today.toDateString() <= endDate.toDateString()) {
                             status = 'Active';
                         }
                         else {
@@ -391,7 +359,7 @@ const CourseMap = (props) => {
                             <Input value={selectedCourse?.title} disabled />
                         </Form.Item>
                         <Form.Item label="User Type">
-                            <Select value={selectedCourse?.criteriaUserType} onChange={(value) => setSelectedCourse({ ...selectedCourse, criteriaUserType: value, first: [], second: [], third:[] })}>
+                            <Select value={selectedCourse?.criteriaUserType} onChange={(value) => setSelectedCourse({ ...selectedCourse, criteriaUserType: value })}>
                                 <Option value="client">Client</Option>
                                 <Option value="employee">Employee</Option>
                                 <Option value="all">All</Option>

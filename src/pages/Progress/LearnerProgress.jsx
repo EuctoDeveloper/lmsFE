@@ -6,9 +6,10 @@ import { getCustomers, getStaffs } from '../../store/action/users/usersAction';
 import { getCourses } from '../../store/action/courses/courseAction';
 import { downloadCSV } from '../../constants/helper';
 import { useNavigate } from 'react-router-dom';
+import { use } from 'react';
 
 const LearnerProgress = (props) => {
-    const [activeTab, setActiveTab] = useState('user');
+    const [activeTab, setActiveTab] = useState(null);
     const [filterTab, setFilterTab] = useState('client');
     const [courses, setCourses] = useState([]);
     const [customerList, setCustomerList] = useState([]);
@@ -19,7 +20,13 @@ const LearnerProgress = (props) => {
 
     useEffect(() => {
         props.getCustomers_();
+        setActiveTab(new URLSearchParams(window.location.search).get('type') || "user");
     }, []);
+
+    useEffect(() => {
+        if(new URLSearchParams(window.location.search).get('type') !== activeTab)
+            setActiveTab(new URLSearchParams(window.location.search).get('type') || "user");
+    }, [window.location.search]);
 
     useEffect(() => {
         if (activeTab === 'user') {
@@ -64,7 +71,7 @@ const LearnerProgress = (props) => {
     }, [props.customerList, props.staffList]);
     useEffect(() => {
         if(props.courseList && props.courseList.length > 0){
-            setCourses(props.courseList.filter(item => item.courseCriteria.length > 0).map(course => {
+            setCourses(props.courseList.map(course => {
                 let status = 'Deactivated';
                     if(course.isActive) {
                         const today = new Date();
@@ -225,7 +232,7 @@ const LearnerProgress = (props) => {
     return (
         <AppBody heading={"Learner Progress"}>
             <div className="tabs">
-                <Radio.Group defaultValue="a" buttonStyle="solid"  style={{backgroundColor: "#F3661F", padding: "4px 10px", borderRadius: "10px", marginBottom: '20px'}} onChange={e=>setActiveTab(e.target.value)}>
+                <Radio.Group defaultValue="a" buttonStyle="solid"  style={{backgroundColor: "#F3661F", padding: "4px 10px", borderRadius: "10px", marginBottom: '20px'}} onChange={e=>navigate(`/learner-progress?type=${e.target.value}`)}>
                     <Radio.Button value="user" style={{borderRadius: "10px", backgroundColor: activeTab === "user" ? "white" : "#F3661F", borderColor: "#F3661F", color: activeTab === "user" ? "black" : "white"}}>User List</Radio.Button>
                     <Radio.Button value="course" style={{borderRadius: "10px", backgroundColor: activeTab === "course" ? "white" : "#F3661F", borderColor: "#F3661F", color: activeTab === "course" ? "black" : "white"}}>Course List</Radio.Button>
                 </Radio.Group>

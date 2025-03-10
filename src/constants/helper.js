@@ -14,6 +14,7 @@ export function postLoginFn(data) {
     localStorage.setItem("email", data.userData.email);
     localStorage.setItem("name", data.userData.name);
     localStorage.setItem("role", data.userData.role);
+    localStorage.setItem("userId", data.userData.userId);
 }
 
 export const downloadCSV = (heading, rows) => {

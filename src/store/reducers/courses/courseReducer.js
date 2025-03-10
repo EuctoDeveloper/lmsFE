@@ -102,6 +102,16 @@ const initialFetchCourseProgressDetailState = {
     loading: false,
     error: null
 }
+const initialSaveActivityState = {
+    response: {},
+    loading: false,
+    error: null
+}
+const initialFetchLessonActivityState = {
+    response: {},
+    loading: false,
+    error: null
+}
 
 export function courseListReducer(state = initialCoursesState, action) {
     switch (action.type) {
@@ -671,6 +681,74 @@ export function fetchCourseProgressDetailReducer(state = initialFetchCourseProgr
                 ...state,
                 loading: false,
                 response: action.message
+            }
+        default:
+            return state
+    }
+}
+
+export function saveActivityReducer(state = initialSaveActivityState, action) {
+    switch (action.type) {
+        case type.SAVE_ACTIVITY:
+            openLoader();
+            return {
+                ...state,
+                loading: true
+            }
+        case type.SAVE_ACTIVITY_SUCCESS:
+            closeLoader();
+            OpenNotification("success", "Success", action.data.message);
+            return {
+                ...state,
+                loading: false,
+                response: action.data
+            }
+        case type.SAVE_ACTIVITY_FAILURE:
+            closeLoader();
+            OpenNotification("error", "Error", action.message);
+            return {
+                ...state,
+                loading: false,
+                response: action.message
+            }
+        case type.SAVE_ACTIVITY_CLEAR:
+            return {
+                ...state,
+                loading: false,
+                response: {}
+            }
+        default:
+            return state
+    }
+}
+export const fetchLessonActivityReducer = (state = initialFetchLessonActivityState, action) => {
+    switch (action.type) {
+        case type.FETCH_LESSON_ACTIVITY:
+            openLoader();
+            return {
+                ...state,
+                loading: true
+            }
+        case type.FETCH_LESSON_ACTIVITY_SUCCESS:
+            closeLoader();
+            return {
+                ...state,
+                loading: false,
+                response: action.data
+            }
+        case type.FETCH_LESSON_ACTIVITY_FAILURE:
+            closeLoader();
+            OpenNotification("error", "Error", action.message);
+            return {
+                ...state,
+                loading: false,
+                response: action.message
+            }
+        case type.FETCH_LESSON_ACTIVITY_CLEAR:
+            return {
+                ...state,
+                loading: false,
+                response: {}
             }
         default:
             return state

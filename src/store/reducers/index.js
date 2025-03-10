@@ -1,8 +1,9 @@
 import { combineReducers } from "redux";
 import {analyticsReducer, forgotPasswordReducer, loginReducer, resetPasswordReducer, userReducer} from "./common/authReducer";
 import { activateUserReducer, adminListReducer, createUserReducer, customerListReducer, deactivateUserReducer, staffListReducer, updateUserReducer, userDetailReducer } from "./users/userReducer";
-import { activateCourseReducer, activateLessonReducer, activateModuleReducer, addCourseCriteriaReducer, addCourseReducer, addLessonReducer, addModuleReducer, courseDetailReducer, courseListReducer, deactivateCourseReducer, deactivateLessonReducer, deactivateModuleReducer, fetchCourseProgressDetailReducer, fetchCourseProgressListByUserIdReducer, fetchUserProgressListByCourseIdReducer, lessonDetailReducer, lessonUpdateReducer, modulesListReducer, updateCourseReducer, updateModuleReducer } from "./courses/courseReducer";
+import { activateCourseReducer, activateLessonReducer, activateModuleReducer, addCourseCriteriaReducer, addCourseReducer, addLessonReducer, addModuleReducer, courseDetailReducer, courseListReducer, deactivateCourseReducer, deactivateLessonReducer, deactivateModuleReducer, fetchCourseProgressDetailReducer, fetchCourseProgressListByUserIdReducer, fetchLessonActivityReducer, fetchUserProgressListByCourseIdReducer, lessonDetailReducer, lessonUpdateReducer, modulesListReducer, saveActivityReducer, updateCourseReducer, updateModuleReducer } from "./courses/courseReducer";
 import { addDepartmentReducer, addLocationReducer, fetchDepartmentReducer, fetchDepartmentsReducer, fetchLocationReducer, fetchLocationsReducer, updateDepartmentReducer, updateLocationReducer, fetchBranchesReducer, fetchBranchReducer, updateBranchReducer, addBranchReducer, fetchDesignationsReducer, fetchDesignationReducer, updateDesignationReducer, addDesignationReducer, fetchGroupsReducer, fetchGroupReducer, updateGroupReducer, addGroupReducer, fetchCentresReducer, fetchCentreReducer, updateCentreReducer, addCentreReducer } from "./masters/mastersReducer";
+import { addWebinarReducer, deleteWebinarReducer, disableWebinarReducer, getBookedDatesReducer, getWebinarDetailsReducer, getWebinarsReducer, updateWebinarReducer } from "./webinars/webinarReducer";
 // import posts from "./postReducer";
 
 const rootReducer = combineReducers({
@@ -63,6 +64,14 @@ const rootReducer = combineReducers({
     courseProgressList: fetchCourseProgressListByUserIdReducer,
     userProgressList: fetchUserProgressListByCourseIdReducer,
     courseProgressDetail: fetchCourseProgressDetailReducer,
+    saveActivity: saveActivityReducer,
+    lessonActivity: fetchLessonActivityReducer,
+    addWebinar: addWebinarReducer,
+    webinars: getWebinarsReducer,
+    webinar: getWebinarDetailsReducer,
+    updateWebinar: updateWebinarReducer,
+    disableWebinar: disableWebinarReducer,
+    bookedDates: getBookedDatesReducer,
 
 });
 

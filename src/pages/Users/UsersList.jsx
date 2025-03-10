@@ -13,7 +13,7 @@ import { MdDone } from 'react-icons/md';
 const UsersList = (props) => {
 
     const navigate = useNavigate();
-    const [userType, setUserType] = useState('client');
+    const [userType, setUserType] = useState();
     const [customerList, setCustomerList] = useState([]);
     const [staffList, setStaffList] = useState([]);
     const [adminList, setAdminList] = useState([]);
@@ -22,7 +22,12 @@ const UsersList = (props) => {
     
     useEffect(() => {
         props.getCustomers_();
+        setUserType(new URLSearchParams(window.location.search).get('type') || "client");
     }, []);
+
+    useEffect(() => {
+       setUserType(new URLSearchParams(window.location.search).get('type') || "client"); 
+    });
 
     
 
@@ -170,7 +175,7 @@ const UsersList = (props) => {
     };
 
     const changeUserType = (data) => {
-        setUserType(data.target.value);
+        navigate(`/users?type=${data.target.value}`);
     };
 
     const handleSearch = (e) => {
@@ -217,7 +222,7 @@ const UsersList = (props) => {
                         </Button>
                         <div style={{ marginRight: '16px' }}>
                             <span>Filter: </span>
-                            <Radio.Group defaultValue="client" style={{ marginLeft: '8px' }} onChange={(e) => { changeUserType(e); setCurrentPage(1); }}>
+                            <Radio.Group value={userType} style={{ marginLeft: '8px' }} onChange={(e) => { changeUserType(e); setCurrentPage(1); }}>
                                 <Radio.Button value="client">Client</Radio.Button>
                                 <Radio.Button value="staff">Staff</Radio.Button>
                                 <Radio.Button value="course admin">Course Admin</Radio.Button>

@@ -22,17 +22,12 @@ const AddLesson = (props) => {
         maxCount: 1,      // Limit to one file
         showUploadList: true,  // If you want to show the file list
         beforeUpload: (file) => {
-            const isMp4 = file.type === 'video/mp4';
-            if (!isMp4) {
-                OpenNotification("error", "File Type Error", "Only MP4 files are allowed!");
-                return Upload.LIST_IGNORE;
-            }
             if (file.size / 1024 / 1024 > 500) {
-                OpenNotification("error", "File Size Error", "File must be smaller than 500 MB!");
+                OpenNotification("error","File Size Error",'File must be smaller than 500 MB!');
                 return Upload.LIST_IGNORE;
             }
-            message.success(`${file.name} selected.`);
-            return false; // Prevent automatic upload
+          message.success(`${file.name} selected.`);
+          return false;
         },
         onRemove: (file) => {
           // Remove the file from the list if needed
@@ -111,8 +106,7 @@ const AddLesson = (props) => {
                             <Form.Item
                                 label="Title"
                                 name="title"
-                                rules={[{ required: true, message: 'Please input the title!' }, 
-                                    { whitespace: true, message: 'Title cannot be empty' }]}
+                                rules={[{ required: true, message: 'Please input the title!' }]}
                             >
                                 <Input />
                             </Form.Item>
@@ -143,8 +137,7 @@ const AddLesson = (props) => {
                     <Form.Item
                         label="Description"
                         name="content"
-                        rules={[{ required: true, message: 'Please input the description!' }, 
-                            { whitespace: true, message: 'Description cannot be empty' }]}
+                        rules={[{ required: true, message: 'Please input the description!' }]}
                     >
                         <Input.TextArea rows={4} />
                     </Form.Item>

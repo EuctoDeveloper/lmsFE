@@ -39,7 +39,7 @@ const ManageUser = (props) => {
             (!id && props.createUser.message && props.createUser.message.includes("success")) || 
             (id && props.updateUser.message && props.updateUser.message.includes("success")))
         ) {
-            navigate("/users");
+            navigate(`/users?type=${id ? props.userDetail.role === "customer" ? "client" : props.userDetail.role === "employee" ? "staff" : "course admin" : userType}`);
         }
     }, [props.createUser, props.updateUser]);
 
@@ -111,7 +111,18 @@ const ManageUser = (props) => {
     };
 
     const handleBackClick = () => {
-        navigate('/users');
+        navigate(-1);
+    };
+
+    const validateEmailOrPhone = (_, value, callback) => {
+        const email = form.getFieldValue("email");
+        const phone = form.getFieldValue("phone");
+    
+        if (!email && !phone) {
+          return Promise.reject("Either Email or Phone Number is required");
+        }
+    
+        return Promise.resolve();
     };
 
     return (
@@ -126,15 +137,12 @@ const ManageUser = (props) => {
             <Form form={form} layout="vertical" onFinish={handleSubmit} requiredMark={false}>
                 <Row gutter={16}>
                     <Col span={8}>
-                        <Form.Item name="firstName" label="First Name" rules={[{ required: true, message: 'Please enter first name' }, 
-                            { whitespace: true, message: 'First Name cannot be empty' }]}>
+                        <Form.Item name="firstName" label="First Name" rules={[{ required: true, message: 'Please enter first name' }]}>
                             <Input />
                         </Form.Item>
                     </Col>
                     <Col span={8}>
-                        <Form.Item name="lastName" label="Last Name" rules={[{ required: true, message: 'Please enter last name' },
-                            { whitespace: true, message: 'Last Name cannot be empty' }
-                        ]}>
+                        <Form.Item name="lastName" label="Last Name" rules={[{ required: true, message: 'Please enter last name' }]}>
                             <Input />
                         </Form.Item>
                     </Col>
@@ -214,15 +222,30 @@ const ManageUser = (props) => {
                     )}
                     <Row gutter={16}>
                         <Col span={8}>
-                            <Form.Item name="email" label="Email ID" rules={[{ required: true, message: 'Please enter email id' }, 
-                            { whitespace: true, message: 'Email Id cannot be empty' }]}>
-                                <Input />
-                            </Form.Item>
+                        <Form.Item
+                            name="email"
+                            label="Email ID"
+                            dependencies={["phone"]}
+                            rules={[
+                            { type: "email", message: "Please enter a valid email" },
+                            { validator: validateEmailOrPhone },
+                            ]}
+                        >
+                            <Input />
+                        </Form.Item>
                         </Col>
                         <Col span={8}>
-                            <Form.Item name="phone" label="Phone Number" rules={[{ required: true, message: 'Please enter phone number' }, { pattern: /^\d{10}$/, message: 'Phone Number requires exactly 10 digits' }]}>
-                                <Input />
-                            </Form.Item>
+                        <Form.Item
+                            name="phone"
+                            label="Phone Number"
+                            dependencies={["email"]}
+                            rules={[
+                            { pattern: /^\d{10}$/, message: "Phone Number requires exactly 10 digits" },
+                            { validator: validateEmailOrPhone },
+                            ]}
+                        >
+                            <Input />
+                        </Form.Item>
                         </Col>
                     </Row>
                     <Row justify="end">

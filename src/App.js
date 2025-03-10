@@ -28,6 +28,8 @@ import TrackUserList from './pages/Progress/TrackUserList';
 import TrackCourseList from './pages/Progress/TrackCourseList';
 import CourseProgress from './pages/Progress/CourseProgress';
 import AssesmentProgress from './pages/Progress/AssesmentProgress';
+import ManageActivity from './pages/Courses/ManageActivity';
+import JoinWebinar from './pages/Webinars/JoinWebinar';
 function App(props) {  
   useEffect(() => {
     if(!props.user){
@@ -35,6 +37,7 @@ function App(props) {
         email: localStorage.getItem('email'),
         name: localStorage.getItem('name'),
         role: localStorage.getItem('role'),
+        userId: localStorage.getItem('userId'),
       };
       if (!user.role || !user.email || !user.name) {
         localStorage.clear();
@@ -63,6 +66,7 @@ function App(props) {
             <Route path="/add-module/:id/:readOnly" element={<ManageModule />} />
             <Route path="/add-lesson/:moduleId/:courseId" element={<AddLesson />} />
             <Route path="/edit-lesson/:id" element={<AddLesson />} />
+            <Route path="/activity/:id" element={<ManageActivity  />} />
             <Route path="/courses" element={<CourseList />} />
             <Route path="/manage-course/:id" element={<AddCourse />} />
             <Route path="/users" element={<UsersList />} />
@@ -82,9 +86,12 @@ function App(props) {
             <Route path="/progress/assessment/:courseId/:userId/:moduleId/:lessonId" element={<AssesmentProgress />} />
             <Route path="/meetings" element={<WebinarList />} />
             <Route path="/webinar/add" element={<ManageWebinar />} />
+            <Route path="/edit-webinar/:id" element={<ManageWebinar />} />
+            <Route path="/join-webinar/:id/" element={<JoinWebinar />} />
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/webinar" element={<JoinWebinar />} />
           {/* <Route path="/sign-up" element={<RegistrationPage />} />
           <Route path="/redirect-mail" element={<RedirectMail />} />
           <Route path="/password" element={<Password />} /> */}

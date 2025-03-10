@@ -114,3 +114,26 @@ export function addCourseCriteria(data) {
         payload: data
     }
 }
+export function saveActivityAction(data) {
+    return {
+        type: type.SAVE_ACTIVITY,
+        payload: data
+    }
+}
+export function  clearSaveActivityAction() {
+    return {
+        type: type.SAVE_ACTIVITY_CLEAR
+    }
+}
+
+export function fetchLessonActivityAction(data) {
+    return {
+        type: type.FETCH_LESSON_ACTIVITY,
+        payload: data
+    }
+}
+export function fetchLessonActivityClearAction() {
+    return {
+        type: type.FETCH_LESSON_ACTIVITY_CLEAR
+    }
+}

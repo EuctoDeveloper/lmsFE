@@ -32,7 +32,7 @@ const CourseProgress = (props) => {
     return (
         <AppBody title={props.courseProgressDetail.title} heading={`${name}'s Progress`}>
             <div className="body">
-                { moduleData.map((module, index) => (
+                { moduleData.length > 0 ? moduleData.map((module, index) => (
                     <div style={{marginBottom: "20px"}}>
                         <Card key={index} className="module-card" style={{backgroundColor: "#f8f8f8", marginBottom: "5px"}}>
                             <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -89,8 +89,17 @@ const CourseProgress = (props) => {
                                     </div>
                                 </Card>
                             )))}
-                        </div>
-                    ))}
+                        </div>))
+                    :
+
+                    <div style={{marginBottom: "20px"}}>
+                        <Card className="module-card" style={{backgroundColor: "#f8f8f8", marginBottom: "5px"}}>
+                            <div className="card-header" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <h2>This course is not enrolled by this user.</h2>
+                            </div>
+                        </Card>
+                    </div>
+                }
                 {/* Repeat Card component for more modules */}
             </div>
 

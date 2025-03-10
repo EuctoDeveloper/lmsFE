@@ -5,7 +5,6 @@ import { addCourseCriteria, getCourses } from '../../store/action/courses/course
 import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getBranchesAction, getCentersAction, getDepartmentsAction, getDesignationsAction, getGroupsAction, getLocationsAction } from '../../store/action/masters/masterAction';
-import OpenNotification from '../../utils/OpenNotification';
 
 
 const { Content } = Layout;
@@ -142,21 +141,6 @@ const SetCourseMap = (props) => {
             data.location = location.includes('*') ? ['*'] : location;
             data.center = center.includes('*') ? ['*'] : center;
             data.group = group.includes('*') ? ['*'] : group;
-            if(data.location.length === 0) {
-                OpenNotification("error", "Error", 'Select atleast one Location');
-                setIsDirty(false);
-                return;
-            }
-            if(data.center.length === 0) {
-                OpenNotification("error", "Error", 'Select atleast one Center');
-                setIsDirty(false);
-                return;
-            }
-            if(data.group.length === 0) {
-                OpenNotification("error", "Error", 'Select atleast one Group');
-                setIsDirty(false);
-                return;
-            }
             data.branch = [];
             data.designation = [];
             data.department = [];
@@ -164,21 +148,6 @@ const SetCourseMap = (props) => {
             data.department = department.includes('*') ? ['*'] : department;
             data.branch = branch.includes('*') ? ['*'] : branch;
             data.designation = designation.includes('*') ? ['*'] : designation;
-            if(data.department.length === 0) {
-                OpenNotification("error", "Error", 'Select atleast one Department');
-                setIsDirty(false);
-                return;
-            }
-            if(data.branch.length === 0) {
-                OpenNotification("error", "Error", 'Select atleast one Branch');
-                setIsDirty(false);
-                return;
-            }
-            if(data.designation.length === 0) {
-                OpenNotification("error", "Error", 'Select atleast one Designation');
-                setIsDirty(false);
-                return;
-            }
             data.location = [];
             data.center = [];
             data.group = [];
@@ -189,11 +158,6 @@ const SetCourseMap = (props) => {
             data.branch = [];
             data.designation = [];
             data.department = [];
-        }
-        if(data.courseIds.length === 0) {
-            OpenNotification("error", "Error", 'Select atleast one Course');
-            setIsDirty(false);
-            return;
         }
         props.addCourseCriteria_(data);
     };

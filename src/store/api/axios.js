@@ -8,7 +8,7 @@ import { NO_TOKEN_URL } from "../../constants/helper";
 
 
 const axios_config = axios.create({
-    baseURL: `https://lms.visionfundindia.in`
+    baseURL: `https://staging.visionfundindia.in`
 })
 
 
@@ -27,7 +27,6 @@ axios_config.interceptors.request.use(function(config) {
     config.headers.Authorization = `${token}`;
     return config;
 })
-
 axios_config.interceptors.response.use(function(response) {
     return response;
 }, function(error) {

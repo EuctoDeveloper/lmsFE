@@ -25,11 +25,11 @@ function TopBar(props) {
   };
   const menu = (
     <Menu>
-      {/* <Menu.Item key="profile">
+      <Menu.Item key="profile">
         <div onClick={() => navigate("/profile")}>
           <UserOutlined /> Profile
         </div>
-      </Menu.Item> */}
+      </Menu.Item>
       <Menu.Item key="logout" onClick={logout}>
         <div>
           <LogoutOutlined /> Logout

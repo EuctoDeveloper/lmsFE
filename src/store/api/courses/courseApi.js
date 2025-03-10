@@ -24,3 +24,6 @@ export const addCourseCriteriaApi = (data)=>postApi(`/core/courses/addCriteria`,
 export const getCourseProgressListByUserIdApi = (userId)=>getApi(`/stream/admin/courses/${userId}`);
 export const getUserProgressListByCourseIdApi = (courseId)=>getApi(`/stream/admin/users/${courseId}`);
 export const getCourseProgressDetailApi = (courseId, userId)=>getApi(`/stream/admin/progress/${courseId}/${userId}`);
+
+export const saveActivityApi = (data)=>postApi(`/core/lessons/activity`, data);
+export const getLessonActivityApi = (lessonId)=>getApi(`/core/lessons/activity/${lessonId}`);

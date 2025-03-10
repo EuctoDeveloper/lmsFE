@@ -7,7 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import AppBody from '../../components/Layout/AppBody';
 import { connect } from 'react-redux';
 import { activateLessonAction, activateModuleAction, addModule, deactivateLessonAction, deactivateModuleAction, getModules, resetModule, updateModule } from '../../store/action/courses/courseAction';
-import { FaVideo } from 'react-icons/fa';
+import { FaVideo, FaGamepad } from 'react-icons/fa';
 import { BsXLg } from 'react-icons/bs';
 import { MdDone } from 'react-icons/md';
 import { TbFileCertificate } from 'react-icons/tb';
@@ -75,7 +75,7 @@ const ManageModule = (props) => {
         navigate(-1);
     };
     const addModule = () => {
-        if (!moduleName || moduleName.trim() === '') {
+        if(!moduleName || moduleName === '') {
             OpenNotification('error', 'Module name is required');
             return;
         }
@@ -83,10 +83,6 @@ const ManageModule = (props) => {
         props.addModule_(data);
     };
     const updateModule = () => {
-        if (!editModuleName || editModuleName.trim() === '') {
-            OpenNotification('error', 'Module name is required');
-            return;
-        }
         let data = {title: editModuleName};
         let idToUpdate = editModuleId;
         props.updateModule_(idToUpdate, data);
@@ -252,6 +248,9 @@ const ManageModule = (props) => {
                                         </div>
                                         {module.isActive && (
                                             <div className="card-actions" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                                <Tooltip title="Manage Activity">
+                                                    <FaGamepad style={{ color: 'black', fontSize: '24px', padding:"2px", cursor: "pointer" }} onClick={()=>navigate(`/activity/${lesson.lessonId}`)} />
+                                                </Tooltip>
                                                 { lesson.isActive ? (
                                                     <>
                                                         {!(readOnly === 1 || readOnly === "1") && (

@@ -1,6 +1,6 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
 import * as type from '../../types';
-import { activateCourseApi, activateLessonApi, activateModuleApi, addCourseApi, addCourseCriteriaApi, addLessonApi, addModuleApi, deactivateCourseApi, deactivateLessonApi, deactivateModuleApi, getCourseDetailApi, getCourseProgressDetailApi, getCourseProgressListByUserIdApi, getCoursesApi, getLessonApi, getModulesAPi, getUserProgressListByCourseIdApi, updateCourseApi, updateLessonApi, updateModulespApi } from '../../api/courses/courseApi';
+import { activateCourseApi, activateLessonApi, activateModuleApi, addCourseApi, addCourseCriteriaApi, addLessonApi, addModuleApi, deactivateCourseApi, deactivateLessonApi, deactivateModuleApi, getCourseDetailApi, getCourseProgressDetailApi, getCourseProgressListByUserIdApi, getCoursesApi, getLessonActivityApi, getLessonApi, getModulesAPi, getUserProgressListByCourseIdApi, saveActivityApi, updateCourseApi, updateLessonApi, updateModulespApi } from '../../api/courses/courseApi';
 
 function* fetchCoursesSaga(action) {
     try {
@@ -162,6 +162,22 @@ function* fetchCourseProgressDetailSaga(action) {
        yield put({type: type.FETCH_COURSE_PROGRESS_DETAIL_FAILURE, message: e.response.data.message});
     }
 }
+function* saveActivitySaga(action) {
+    try {
+       const data = yield call(saveActivityApi, action.payload);
+       yield put({type: type.SAVE_ACTIVITY_SUCCESS, data});
+    } catch (e) {
+       yield put({type: type.SAVE_ACTIVITY_FAILURE, message: e.response.data.message});
+    }
+}
+function* fetchLessonActivitySaga(action) {
+    try {
+       const data = yield call(getLessonActivityApi, action.payload);
+       yield put({type: type.FETCH_LESSON_ACTIVITY_SUCCESS, data});
+    } catch (e) {
+       yield put({type: type.FETCH_LESSON_ACTIVITY_FAILURE, message: e.response.data.message});
+    }
+}
  
 
 
@@ -224,4 +240,10 @@ export function* watchFetchUserProgressListByCourseIdSaga() {
 }
 export function* watchFetchCourseProgressDetailSaga() {
     yield takeEvery(type.FETCH_COURSE_PROGRESS_DETAIL, fetchCourseProgressDetailSaga);
+}
+export function* watchSaveActivitySaga() {
+    yield takeEvery(type.SAVE_ACTIVITY, saveActivitySaga);
+}
+export function* watchFetchLessonActivitySaga() {
+    yield takeEvery(type.FETCH_LESSON_ACTIVITY, fetchLessonActivitySaga);
 }
